@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Environmental chamber — control circuit</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color:#1e293b; background:#ffffff; margin:0; padding:24px 20px 40px; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+  .sub { font-size: 13px; color:#64748b; margin: 0 0 18px; }
+  .diagram-scroll { overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 10px; -webkit-overflow-scrolling: touch; }
+  .legend { display:flex; flex-wrap:wrap; gap:8px 20px; margin: 16px 0 6px; font-size: 12px; color:#334155; }
+  .legend span.dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; }
+  .note { font-size: 12px; color:#64748b; margin: 14px 0 22px; line-height:1.6; }
+  h2 { font-size: 15px; font-weight: 600; margin: 28px 0 10px; }
+  table { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+  th, td { text-align:left; padding: 7px 10px; border-bottom: 1px solid #e2e8f0; }
+  th { background:#f8fafc; color:#475569; font-weight:600; }
+  td.ctrl { font-weight:600; color:#1e293b; }
+  tr.group-start td { border-top: 1.5px solid #cbd5e1; }
+  .tblwrap { overflow-x:auto; border:1px solid #e2e8f0; border-radius:10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Environmental chamber — control circuit</h1>
+  <p class="sub">Reconstructed from wiring photos, July 14 2026 · Arduino Uno R3 as hub</p>
+
+  <div class="diagram-scroll">
+  <svg viewBox="0 0 1150 740" width="1150" height="740" style="display:block;">
+    <title>Environmental chamber control circuit diagram</title>
+
+    <!-- Arduino Uno -->
+    <rect x="40" y="90" width="170" height="610" rx="8" fill="#F8FAFC" stroke="#334155" stroke-width="1.5"/>
+    <text x="125" y="115" text-anchor="middle" font-size="14" font-weight="600" fill="#1e293b">Arduino Uno R3</text>
+    <text x="125" y="130" text-anchor="middle" font-size="10.5" fill="#64748b">control hub</text>
+    <line x1="60" y1="136" x2="190" y2="136" stroke="#e2e8f0" stroke-width="1"/>
+
+    <circle cx="210" cy="145" r="3.5" fill="#CA8A04"/>
+    <text x="200" y="149" text-anchor="end" font-size="11.5" fill="#1e293b">D13 · yellow</text>
+    <circle cx="210" cy="180" r="3.5" fill="#EA580C"/>
+    <text x="200" y="184" text-anchor="end" font-size="11.5" fill="#1e293b">D12 · orange</text>
+    <circle cx="210" cy="215" r="3.5" fill="#0D9488"/>
+    <text x="200" y="219" text-anchor="end" font-size="11.5" fill="#1e293b">D11 · teal 1</text>
+    <line x1="210" y1="250" x2="234" y2="250" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <text x="200" y="254" text-anchor="end" font-size="11" fill="#94A3B8">D10 — not used</text>
+
+    <circle cx="210" cy="310" r="3.5" fill="#78350F"/>
+    <text x="200" y="314" text-anchor="end" font-size="11.5" fill="#1e293b">D9 · brown</text>
+    <circle cx="210" cy="345" r="3.5" fill="#0D9488"/>
+    <text x="200" y="349" text-anchor="end" font-size="11.5" fill="#1e293b">D8 · teal 2</text>
+    <line x1="210" y1="380" x2="234" y2="380" stroke="#94A3B8" stroke-width="1.5" stroke-dasharray="3,3"/>
+    <text x="200" y="384" text-anchor="end" font-size="11" fill="#94A3B8">D7 — not used</text>
+
+    <circle cx="210" cy="460" r="3.5" fill="#2563EB"/>
+    <text x="200" y="464" text-anchor="end" font-size="11.5" fill="#1e293b">A0 · blue</text>
+    <circle cx="210" cy="560" r="3.5" fill="#DC2626"/>
+    <text x="200" y="564" text-anchor="end" font-size="11.5" fill="#1e293b">5V · red</text>
+    <circle cx="210" cy="600" r="3.5" fill="#1e293b"/>
+    <text x="200" y="604" text-anchor="end" font-size="11.5" fill="#1e293b">GND · black</text>
+
+    <!-- K30 CO2 sensor -->
+    <rect x="560" y="40" width="210" height="110" rx="8" fill="#EFF6FF" stroke="#334155" stroke-width="1.5"/>
+    <text x="665" y="62" text-anchor="middle" font-size="13.5" font-weight="600" fill="#1e293b">K30 CO2 sensor</text>
+    <text x="665" y="77" text-anchor="middle" font-size="10.5" fill="#64748b">0–10% range</text>
+    <text x="665" y="98" text-anchor="middle" font-size="11" fill="#1e293b">Rx/Tx ↔ D13/D12</text>
+    <text x="665" y="115" text-anchor="middle" font-size="11" fill="#1e293b">VCC/GND ↔ 12V supply</text>
+    <text x="665" y="133" text-anchor="middle" font-size="9.5" fill="#94A3B8">sensor wires: brown=GND, red=VCC</text>
+
+    <path d="M210,145 L480,145 L480,85 L560,85" fill="none" stroke="#CA8A04" stroke-width="2"/>
+    <path d="M210,180 L500,180 L500,110 L560,110" fill="none" stroke="#EA580C" stroke-width="2"/>
+
+    <!-- 12V supply -->
+    <rect x="560" y="190" width="210" height="70" rx="8" fill="#FEF2F2" stroke="#334155" stroke-width="1.5"/>
+    <text x="665" y="216" text-anchor="middle" font-size="13.5" font-weight="600" fill="#1e293b">12V DC supply</text>
+    <text x="665" y="233" text-anchor="middle" font-size="10.5" fill="#64748b">powers K30 + both controllers</text>
+
+    <path d="M600,150 L600,190" fill="none" stroke="#DC2626" stroke-width="2"/>
+    <path d="M600,260 L600,300" fill="none" stroke="#DC2626" stroke-width="2"/>
+    <path d="M570,260 L530,260 L530,515 L560,515" fill="none" stroke="#DC2626" stroke-width="2"/>
+
+    <!-- D9 -> Ctrl1 ENA -->
+    <path d="M210,310 L480,310 L480,368 L560,368" fill="none" stroke="#78350F" stroke-width="2"/>
+
+    <!-- Teal 1 heat-enable bus -->
+    <path d="M210,215 L460,215 L460,596" fill="none" stroke="#0D9488" stroke-width="2"/>
+    <path d="M460,396 L560,396" fill="none" stroke="#0D9488" stroke-width="2"/>
+    <path d="M460,568 L560,568" fill="none" stroke="#0D9488" stroke-width="2"/>
+    <path d="M460,596 L560,596" fill="none" stroke="#0D9488" stroke-width="2"/>
+
+    <!-- Motor controller 1 -->
+    <rect x="560" y="300" width="260" height="170" rx="8" fill="#F8FAFC" stroke="#334155" stroke-width="1.5"/>
+    <text x="690" y="322" text-anchor="middle" font-size="13.5" font-weight="600" fill="#1e293b">Motor controller 1</text>
+    <text x="690" y="337" text-anchor="middle" font-size="10.5" fill="#64748b">dual H-bridge</text>
+    <line x1="580" y1="348" x2="800" y2="348" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="580" y="372" font-size="11" fill="#1e293b">ENA · brown</text>
+    <text x="800" y="372" text-anchor="end" font-size="11" fill="#1e293b">OUT1 → valve</text>
+    <text x="580" y="400" font-size="11" fill="#1e293b">ENB · orange</text>
+    <text x="800" y="400" text-anchor="end" font-size="11" fill="#1e293b">OUT2 → heater 1</text>
+    <text x="690" y="428" text-anchor="middle" font-size="10.5" fill="#64748b">12V / GND / 5V ref</text>
+    <text x="690" y="450" text-anchor="middle" font-size="9.5" fill="#94A3B8">IN1–4: see table below</text>
+
+    <circle cx="560" cy="368" r="3.5" fill="#78350F"/>
+    <circle cx="560" cy="396" r="3.5" fill="#0D9488"/>
+    <circle cx="600" cy="300" r="3.5" fill="#DC2626"/>
+    <circle cx="820" cy="368" r="3.5" fill="#334155"/>
+    <circle cx="820" cy="396" r="3.5" fill="#334155"/>
+
+    <!-- Motor controller 2 -->
+    <rect x="560" y="500" width="260" height="170" rx="8" fill="#F8FAFC" stroke="#334155" stroke-width="1.5"/>
+    <text x="690" y="522" text-anchor="middle" font-size="13.5" font-weight="600" fill="#1e293b">Motor controller 2</text>
+    <text x="690" y="537" text-anchor="middle" font-size="10.5" fill="#64748b">dual H-bridge</text>
+    <line x1="580" y1="548" x2="800" y2="548" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="580" y="572" font-size="11" fill="#1e293b">ENA · white</text>
+    <text x="800" y="572" text-anchor="end" font-size="11" fill="#1e293b">OUT1 → heater 2</text>
+    <text x="580" y="600" font-size="11" fill="#1e293b">ENB · green</text>
+    <text x="800" y="600" text-anchor="end" font-size="11" fill="#1e293b">OUT2 → heater 3</text>
+    <text x="690" y="628" text-anchor="middle" font-size="10.5" fill="#64748b">12V / GND / 5V ref</text>
+    <text x="690" y="650" text-anchor="middle" font-size="9.5" fill="#94A3B8">IN1–4: see table below</text>
+
+    <circle cx="560" cy="568" r="3.5" fill="#0D9488"/>
+    <circle cx="560" cy="596" r="3.5" fill="#0D9488"/>
+    <circle cx="560" cy="515" r="3.5" fill="#DC2626"/>
+    <circle cx="820" cy="568" r="3.5" fill="#334155"/>
+    <circle cx="820" cy="596" r="3.5" fill="#334155"/>
+
+    <!-- Outputs -->
+    <rect x="910" y="320" width="180" height="70" rx="8" fill="#FFFBEB" stroke="#334155" stroke-width="1.5"/>
+    <text x="1000" y="350" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">CO2 valve</text>
+    <text x="1000" y="366" text-anchor="middle" font-size="10.5" fill="#64748b">NC solenoid</text>
+
+    <rect x="910" y="420" width="180" height="70" rx="8" fill="#FFFBEB" stroke="#334155" stroke-width="1.5"/>
+    <text x="1000" y="450" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">Heater 1</text>
+    <text x="1000" y="466" text-anchor="middle" font-size="10.5" fill="#64748b">chamber heating foil</text>
+
+    <rect x="910" y="520" width="180" height="70" rx="8" fill="#FFFBEB" stroke="#334155" stroke-width="1.5"/>
+    <text x="1000" y="550" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">Heater 2</text>
+    <text x="1000" y="566" text-anchor="middle" font-size="10.5" fill="#64748b">chamber heating foil</text>
+
+    <rect x="910" y="620" width="180" height="70" rx="8" fill="#FFFBEB" stroke="#334155" stroke-width="1.5"/>
+    <text x="1000" y="650" text-anchor="middle" font-size="13" font-weight="600" fill="#1e293b">Heater 3</text>
+    <text x="1000" y="666" text-anchor="middle" font-size="10.5" fill="#64748b">chamber heating foil</text>
+
+    <path d="M820,368 L860,368 L860,355 L910,355" fill="none" stroke="#334155" stroke-width="1.5"/>
+    <path d="M820,396 L860,396 L860,455 L910,455" fill="none" stroke="#334155" stroke-width="1.5"/>
+    <path d="M820,568 L860,568 L860,555 L910,555" fill="none" stroke="#334155" stroke-width="1.5"/>
+    <path d="M820,596 L860,596 L860,655 L910,655" fill="none" stroke="#334155" stroke-width="1.5"/>
+
+    <!-- NTC divider -->
+    <rect x="270" y="400" width="150" height="150" rx="8" fill="#EFF6FF" stroke="#334155" stroke-width="1.5"/>
+    <text x="345" y="420" text-anchor="middle" font-size="12.5" font-weight="600" fill="#1e293b">NTC divider</text>
+    <text x="345" y="434" text-anchor="middle" font-size="10" fill="#64748b">temp. sense</text>
+    <line x1="290" y1="442" x2="400" y2="442" stroke="#e2e8f0" stroke-width="1"/>
+    <text x="345" y="461" text-anchor="middle" font-size="10.5" fill="#1e293b">D8 → resistor → node</text>
+    <text x="345" y="478" text-anchor="middle" font-size="10.5" fill="#1e293b">A0 reads that node</text>
+    <text x="345" y="495" text-anchor="middle" font-size="10.5" fill="#1e293b">node → NTC 10k → GND</text>
+    <text x="345" y="518" text-anchor="middle" font-size="9" fill="#94A3B8">GND = common rail</text>
+
+    <path d="M210,345 L240,345 L240,461 L270,461" fill="none" stroke="#0D9488" stroke-width="2"/>
+    <path d="M210,460 L245,460 L245,478 L270,478" fill="none" stroke="#2563EB" stroke-width="2"/>
+    <circle cx="270" cy="461" r="3.5" fill="#0D9488"/>
+    <circle cx="270" cy="478" r="3.5" fill="#2563EB"/>
+
+  </svg>
+  </div>
+
+  <div class="legend">
+    <span><span class="dot" style="background:#CA8A04"></span>Yellow — D13, K30 Rx</span>
+    <span><span class="dot" style="background:#EA580C"></span>Orange — D12, K30 Tx</span>
+    <span><span class="dot" style="background:#0D9488"></span>Teal 1 — D11, heat-enable bus</span>
+    <span><span class="dot" style="background:#0D9488"></span>Teal 2 — D8, NTC divider</span>
+    <span><span class="dot" style="background:#78350F"></span>Brown — D9, valve enable</span>
+    <span><span class="dot" style="background:#2563EB"></span>Blue — A0, NTC read</span>
+    <span><span class="dot" style="background:#DC2626"></span>Red — 5V / 12V power</span>
+    <span><span class="dot" style="background:#1e293b"></span>Black — GND</span>
+  </div>
+
+  <p class="note">
+    5V and GND are common-tied across the Arduino, both controller boards' reference terminals, the 12V supply's return, and the NTC divider's low leg — that's why they're shown as a single dot + label on each board rather than long traced wires. Teal 1 and Teal 2 are the same wire color used for two different signals (D11's heat-enable bus and D8's divider tap) — kept visually identical here since that's what they are on the bench.
+  </p>
+
+  <h2>H-bridge fixed logic (IN1–4)</h2>
+  <div class="tblwrap">
+  <table>
+    <tr><th>Controller</th><th>Pin</th><th>Wire</th><th>Connects to</th></tr>
+    <tr class="group-start"><td class="ctrl" rowspan="8">Ctrl 1<br><span style="font-weight:400;color:#64748b">valve + heater 1</span></td><td>ENA</td><td>Brown</td><td>Arduino D9 (PWM)</td></tr>
+    <tr><td>IN1</td><td>Red</td><td>5V (fixed HIGH)</td></tr>
+    <tr><td>IN2</td><td>Black</td><td>GND (fixed LOW)</td></tr>
+    <tr><td>IN3</td><td>Red</td><td>5V (fixed HIGH)</td></tr>
+    <tr><td>IN4</td><td>Black</td><td>GND (fixed LOW)</td></tr>
+    <tr><td>ENB</td><td>Orange</td><td>Teal 1 → Arduino D11 (PWM)</td></tr>
+    <tr><td>OUT1</td><td>—</td><td>CO2 valve (NC solenoid)</td></tr>
+    <tr><td>OUT2</td><td>—</td><td>Heater 1</td></tr>
+    <tr class="group-start"><td class="ctrl" rowspan="8">Ctrl 2<br><span style="font-weight:400;color:#64748b">heater 2 + 3</span></td><td>ENA</td><td>White</td><td>Teal 1 → Arduino D11 (PWM)</td></tr>
+    <tr><td>IN1</td><td>Orange</td><td>5V (fixed HIGH)</td></tr>
+    <tr><td>IN2</td><td>Black</td><td>GND (fixed LOW)</td></tr>
+    <tr><td>IN3</td><td>Chocolate</td><td>GND (fixed LOW)</td></tr>
+    <tr><td>IN4</td><td>Blue</td><td>5V (fixed HIGH)</td></tr>
+    <tr><td>ENB</td><td>Green</td><td>Teal 1 → Arduino D11 (PWM)</td></tr>
+    <tr><td>OUT1</td><td>—</td><td>Heater 2</td></tr>
+    <tr><td>OUT2</td><td>—</td><td>Heater 3</td></tr>
+  </table>
+  </div>
+
+  <p class="note">Not wired: D7 (alarm/buzzer, present in the original sketch but unconnected) and D10 (originally the DHT11 pin — superseded by the NTC divider on D8/A0).</p>
+
+</div>
+</body>
+</html>
